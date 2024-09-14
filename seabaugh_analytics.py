@@ -7,7 +7,9 @@ This module demonstrates fetching data from various web sources, processing it u
 """
  
 
-
+######
+# Import modules
+######
 
 # Standard Library Imports
 import csv
@@ -18,7 +20,7 @@ import collections
 
 # External Library Imports
 import requests
-
+import pandas as pd
 
 # Local Module Imports
 import seabaugh_utils
@@ -28,8 +30,11 @@ import seabaugh_project_setup
 logging.basicConfig(level=logging.INFO)
 
 
+#####
+# Function Definitions Text
+#####
 
-#Function Definitions Text
+#Fetch data from a url and write it to a txt file
 def fetch_and_write_txt_data(folder_name, filename, url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -37,15 +42,27 @@ def fetch_and_write_txt_data(folder_name, filename, url):
     else:
         print(f"Failed to fetch txt data: {response.status_code}")
 
+#Write text data from the given URL
+def write_txt_file(folder_name, filename, data)
 
-#Function Definitions CSV
+#######
+# Function Definitions CSV
+#######
+
+#Fetch data from a url and write it to a CSV file
 def fetch_and_write_CSV_data(folder_name, filename, url):
     response = requests.get(url)
     if response.status_code == 200:
     # Call your write function to save response content
     else:
         print(f"Failed to fetch CSV data:{response.status_code}")
-#Function Definitions Excel
+
+
+######
+# Function Definitions Excel
+######
+
+#Fetch data from a url and write it to an Excel file
 def fetch_and_write_excel_data(folder_name, filename, url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -53,8 +70,11 @@ def fetch_and_write_excel_data(folder_name, filename, url):
     else:
         print(f"Failed to fetch Excel data:{response.status_code}")
 
-#Function Definitions JSON
+########
+# Function Definitions JSON
+########
 
+#Fetch data from a url and write it to a JSON file
 def fetch_and_write_JSON_data(folder_name, filename, url):
     response = requests.get(url)
     if response.status_code == 200:
