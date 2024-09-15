@@ -40,20 +40,22 @@ logging.basicConfig(filename='text_analysis.log',
 ###########################
 
 # Fetch txt data from a url and write it to a file
-def fetch_and_write_txt_data(folder_name, filename, url):
+def fetch_and_write_text_data(folder_name, filename, url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         response.raise_for_status()
-        write_txt_file(folder_name, filename, response.text)
+        write_text_file(folder_name, filename, response.text)
     except requests.RequestException as e:
-        logging.error(f"Failed to fetch dta from {url}: {e}")
+        logging.error(f"Failed to fetch data from {url}: {e}")
+        print(f"Failed to fetch dta from {url}: {e}")
 
 # Write text data from the given URL
-def write_txt_file(folder_name, filename, data):
-    file_path = pathlib.Path(folder_name).join_path(filename)
+def write_text_file(folder_name, filename, data):
+    file_path = pathlib.Path(folder_name).joinpath(filename)
     with file_path.open('w') as file:
         file.write(data)
     logging.info(f"Text data saved to {file_path}")
+    print(f"Text data saved to {file_path}")
 
 # Processes text Data and generates statistics. Formats to a text file. 
 def process_text_data(folder_name, filename, output_filename):
@@ -84,10 +86,11 @@ def process_text_data(folder_name, filename, output_filename):
    
     except FileNotFoundError: 
         logging.error(f"Error: The file {filename} does not exist.")
-    
+        print(f"Error: The file {filename} does not exist.")
+
     except Exception as e:
         logging.error(f"An error occured {e}")
-
+        print(f"An error occured {e}")
 
 ##########################
 # Function Definitions CSV
@@ -99,8 +102,10 @@ def fetch_and_write_csv_data(folder_name, filename, url):
         response = requests.get(url)
         response.raise_for_status()
         write_csv_file(folder_name, filename, response.text)
+
     except requests.RequestException as e:
         logging.error(f"Failed to fetch CSV data from {url}: {e}")
+        print(f"Failed to fetch CSV data from {url}: {e}")
 
 # Write CSV data to a file
 def write_csv_file(folder_name, filename, data):
@@ -111,6 +116,7 @@ def write_csv_file(folder_name, filename, data):
     with file_path.open('w', newline='') as file:
         file.write(data)
     logging.info(f"CSV data saved to {file_path}")
+    print(f"CSV data saved to {file_path}")
 
 # Processes CSV data to generate statistics and summaries. Saves results to an output file. 
 def process_csv_data(folder_name, filename, output_filename):
@@ -145,11 +151,15 @@ def process_csv_data(folder_name, filename, output_filename):
             file.write("CSV Data Analysis\n")
             file.write("\n".join(summary))
         logging.info(f"CSV processing completed. Data saved to {output_filename}")
+        print(f"CSV processing completed. Data saved to {output_filename}")
     
     except FileNotFoundError:
         logging.error(f"Error: The file {file_path} does not exist.")
+        print(f"Error: The file {file_path} does not exist.")
+
     except Exception as e:
         logging.error(f"An error occured {e}")
+        print(f"An error occured {e}")
 
 
 
@@ -163,8 +173,10 @@ def fetch_and_write_excel_data(folder_name, filename, url):
         response = requests.get(url)
         response.raise_for_status()
         write_excel_file(folder_name, filename, response.content)
+
     except requests.exceptions.RequestException as err:
         logging.error(f"Error fetching Excel data: {err}")
+        print(f"Error fetching Excel data: {err}")
 
 # Write Excel file to a file
 def write_excel_file(folder_name, filename, data):
@@ -174,6 +186,7 @@ def write_excel_file(folder_name, filename, data):
     with file_path.open('wb') as file:
         file.write(data)
     logging.info(f"Excel data saved to {file_path}")
+    print(f"Excel data saved to {file_path}")
 
 # Process an Excel file to generate statistics and summaries. Saves results to an output file.
 def process_excel_data(folder_name, filename, output_filename):
@@ -200,11 +213,15 @@ def process_excel_data(folder_name, filename, output_filename):
             file.write("Excel Data Analysis:\n")
             file.write("\n".join(summary))
         logging.info(f"Excel processing complete. Data saved to {output_filename}")
+        print(f"Excel processing complete. Data saved to {output_filename}")
+
     except FileNotFoundError:
         logging.error(f"Error: The file {file_path} does not exist.")
+        print(f"Error: The file {file_path} does not exist.")
+
     except Exception as e:
         logging.error(f"An error occure: {e}")
-
+        print(f"An error occure: {e}")
 
 
 ###########################
@@ -217,8 +234,10 @@ def fetch_and_write_json_data(folder_name, filename, url):
         response = requests.get(url)
         response.raise_for_status()
         write_json_file(folder_name, filename, response.json())
+
     except requests.exceptions.RequestException as err:
         logging.error(f"Error fetching JSON data: {err}")
+        print(f"Error fetching JSON data: {err}")
    
 # Write JSON data to a file
 def write_json_file(folder_name, filename, data):
@@ -227,6 +246,7 @@ def write_json_file(folder_name, filename, data):
     with file_path.open('w') as file:
         json.dump(data, file, indent=4)
     logging.info(f"JSON data saved to {file_path}")
+    print(f"JSON data saved to {file_path}")
 
 # Process a JSOn file to extract data and save results to an output file.
 def process_json_data(folder_name, filename, output_filename):
@@ -281,13 +301,19 @@ def process_json_data(folder_name, filename, output_filename):
             file.write("\n".join(summary))
         
         logging.info(f"JSON processing completed. Data saved to {output_filename}")
+        print(f"JSON processing completed. Data saved to {output_filename}")
 
     except FileNotFoundError:
         logging.error(f"Error: The file {file_path} does not exist.")
+        print(f"Error: The file {file_path} does not exist.")
+
     except json.JSONDecodeError:
         logging.error(f"Error: The file {file_path} does not contain valid JSON.")
+        print(f"Error: The file {file_path} does not contain valid JSON.")
+
     except Exception as e:
         logging.error(f"An error occurred: {e}")
+        print(f"An error occurred: {e}")
 
 
 
@@ -313,7 +339,7 @@ def main():
     base_dir = pathlib.Path(__file__).parent.joinpath('data')
 
     # Define URLs for data fetching
-    txt_url = 'https://shakespeare.mit.edu/hamlet/full.html'
+    txt_url = 'https://shakespeare.mit.edu/romeo_juliet/full.html'
     csv_url = 'https://raw.githubusercontent.com/LearnDataSci/articles/master/Python%20Pandas%20Tutorial%20A%20Complete%20Introduction%20for%20Beginners/IMDB-Movie-Data.csv'
     excel_url = 'https://github.com/bharathirajatut/sample-excel-dataset/raw/master/cattle.xls'
     json_url =  'http://api.open-notify.org/astros.json'
@@ -331,7 +357,7 @@ def main():
     json_folder = pathlib.Path(base_dir).joinpath(f'{prefix}json')
 
     # Fetch and write data to files
-    fetch_and_write_txt_data(txt_folder, txt_filename, txt_url)
+    fetch_and_write_text_data(txt_folder, txt_filename, txt_url)
     fetch_and_write_csv_data(csv_folder, csv_filename, csv_url)
     fetch_and_write_excel_data(excel_folder, excel_filename, excel_url)
     fetch_and_write_json_data(json_folder, json_filename, json_url)
