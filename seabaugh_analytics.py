@@ -107,6 +107,7 @@ def write_csv_file(folder_name, filename, data):
 
 # Processes CSV data to generate statistics and summaries. Saves results to an output file. 
 def process_csv_data(folder_name, filename, output_filename):
+    
     file_path = pathlib.Path(folder_name).joinpath(filename)
     try:
         # Initialize data storage
@@ -165,7 +166,7 @@ def write_excel_file(folder_name, filename, data):
         logging.info(f"Excel data saved to {file_path}")
 
 # Process an Excel file to generate statistics and summaries. Saves results to an output file.
-def process_excel_data(folder_name, filename, output_filename)
+def process_excel_data(folder_name, filename, output_filename):
     file_path = pathlib.Path(folder_name).joinpath(filename)
     try:
          # Read Excel file into a DataFrame
@@ -202,18 +203,77 @@ def process_excel_data(folder_name, filename, output_filename)
 
 # Fetch JSON data from a url and write it to a file
 def fetch_and_write_json_data(folder_name, filename, url):
-    response = requests.get(url)
-    if response.status_code == 200:
-    # Call your write function to save response content
-    else:
-        print(f"Failed to fetch JSON data:{response.status_code}")
-
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        write_json_file(folder_name, filename, response.json)
+    except requests.exceptions.RequestException as err:
+        logging.error(f"Error fetching JSON data: {err}")
+   
 # Write JSON data to a file
 def write_json_file(folder_name, filename, data):
     file_path = pathlib.Path(folder_name).join_path(filename)
     with file_path.open('w') as file:
         file.write(data)
-        print(f"JSON data saved to {file_path}")
+        logging.info(f"JSON data saved to {file_path}")
 
+# Process a JSOn file to extract data and save results to an output file.
+def process_json_file(folder_name, filename, output_filename):
+    
+    file_path = pathlib.Path(folder_name).joinpath(filename)
+    try:
+        # Read JSON data from the input file
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        # Prepare the summary of the JSON data
+        summary = []
+        def process_dict(d, indent_level=0):
+            
+            # Recursively process a dictionary to create a human-readable summary.
+            
+            for key, value in d.items():
+                indent = '  ' * indent_level
+                if isinstance(value, dict):
+                    summary.append(f"{indent}{key}:")
+                    process_dict(value, indent_level + 1)
+                elif isinstance(value, list):
+                    summary.append(f"{indent}{key}:")
+                    process_list(value, indent_level + 1)
+                else:
+                    summary.append(f"{indent}{key}: {value}")
 
+        def process_list(lst, indent_level=0):
+            
+            # Recursively process a list to create a human-readable summary.
+            
+            for item in lst:
+                if isinstance(item, dict):
+                    summary.append('  ' * indent_level + '-')
+                    process_dict(item, indent_level + 1)
+                elif isinstance(item, list):
+                    summary.append('  ' * indent_level + '-')
+                    process_list(item, indent_level + 1)
+                else:
+                    summary.append('  ' * indent_level + f"- {item}")
 
+        # Process the JSON data
+        if isinstance(data, dict):
+            process_dict(data)
+        elif isinstance(data, list):
+            process_list(data)
+        else:
+            summary.append(str(data))
+
+        # Write results to the output file
+        with open(output_filename, 'w') as file:
+            file.write("JSON Data Summary:\n")
+            file.write("\n".join(summary))
+        
+        logging.info(f"JSON processing completed. Data saved to {output_filename}")
+
+    except FileNotFoundError:
+        logging.error(f"Error: The file {file_path} does not exist.")
+    except json.JSONDecodeError:
+        logging.error(f"Error: The file {file_path} does not contain valid JSON.")
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
