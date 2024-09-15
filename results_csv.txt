@@ -1,0 +1,72 @@
+CSV Data Analysis
+Column 'Rank:
+
+  Total Values: 1000
+
+  Unique values: 1000
+
+Column 'Title:
+
+  Total Values: 1000
+
+  Unique values: 999
+
+Column 'Genre:
+
+  Total Values: 1000
+
+  Unique values: 207
+
+Column 'Description:
+
+  Total Values: 1000
+
+  Unique values: 1000
+
+Column 'Director:
+
+  Total Values: 1000
+
+  Unique values: 644
+
+Column 'Actors:
+
+  Total Values: 1000
+
+  Unique values: 996
+
+Column 'Year:
+
+  Total Values: 1000
+
+  Unique values: 11
+
+Column 'Runtime (Minutes):
+
+  Total Values: 1000
+
+  Unique values: 94
+
+Column 'Rating:
+
+  Total Values: 1000
+
+  Unique values: 55
+
+Column 'Votes:
+
+  Total Values: 1000
+
+  Unique values: 997
+
+Column 'Revenue (Millions):
+
+  Total Values: 1000
+
+  Unique values: 815
+
+Column 'Metascore:
+
+  Total Values: 1000
+
+  Unique values: 85
