@@ -88,9 +88,9 @@ def process_text_data(folder_name, filename, output_filename):
     except Exception as e:
         logging.error(f"An error occured {e}")
 
-#######
+##########################
 # Function Definitions CSV
-#######
+##########################
 
 # Fetch CSV data from a url and write it to a file
 def fetch_and_write_csv_data(folder_name, filename, url):
@@ -106,7 +106,7 @@ def write_csv_file(folder_name, filename, data):
         logging.info(f"CSV data saved to {file_path}")
 
 # Processes CSV data to generate statistics and summaries. Saves results to an output file. 
-def process_csv_file(folder_name, filename, output_filename):
+def process_csv_data(folder_name, filename, output_filename):
     file_path = pathlib.Path(folder_name).joinpath(filename)
     try:
         # Initialize data storage
@@ -144,9 +144,9 @@ def process_csv_file(folder_name, filename, output_filename):
 
 
 
-######
+############################
 # Function Definitions Excel
-######
+############################
 
 # Fetch Excel data from a url and write it to a file
 def fetch_and_write_excel_data(folder_name, filename, url):
@@ -165,11 +165,40 @@ def write_excel_file(folder_name, filename, data):
         logging.info(f"Excel data saved to {file_path}")
 
 # Process an Excel file to generate statistics and summaries. Saves results to an output file.
+def process_excel_data(folder_name, filename, output_filename)
+    file_path = pathlib.Path(folder_name).joinpath(filename)
+    try:
+         # Read Excel file into a DataFrame
+        df = pd.read_excel(file_path, sheet_name=None)
+        sheet_names= df.keys()
+        # Prep the summary of each sheet
+        summary = []
+        for sheet_name in sheet_names:
+            data = df[sheet_name]
+        
+            summary.append(f"Sheet: {sheet_name}\n")
+            summary.append(f"Number of Rows: {data.shape[0]}\n")
+            summary.append(f"Number of Columns: {data.shape[1]}\n")
+            summary.append(f"Columns: {', '.join(data.columns)}\n")
+            summary.append("\nSummary Statistics:\n")
+            summary.append(data.describe(include='all').to_string())
+            summary.append("\n\n")
+    
+    # Write results to the output file
+        with open(output_filename, 'w') as file:
+            file.write("Excel Data Analysis:\n")
+            file.write("\n".join(summary))
+        logging.info(f"Excell processing complete. Data saved to {output_filename}")
+    except FileNotFoundError:
+        logging.error(f"Error: The file {file_path} does not exist.")
+    except Exception as e:
+        logging.error(f"An error occure: {e}")
 
 
-########
+
+###########################
 # Function Definitions JSON
-########
+###########################
 
 # Fetch JSON data from a url and write it to a file
 def fetch_and_write_json_data(folder_name, filename, url):
