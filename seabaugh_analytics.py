@@ -218,7 +218,7 @@ def write_json_file(folder_name, filename, data):
         logging.info(f"JSON data saved to {file_path}")
 
 # Process a JSOn file to extract data and save results to an output file.
-def process_json_file(folder_name, filename, output_filename):
+def process_json_data(folder_name, filename, output_filename):
     
     file_path = pathlib.Path(folder_name).joinpath(filename)
     try:
@@ -277,3 +277,62 @@ def process_json_file(folder_name, filename, output_filename):
         logging.error(f"Error: The file {file_path} does not contain valid JSON.")
     except Exception as e:
         logging.error(f"An error occurred: {e}")
+
+
+
+###################################################
+# Main function to demonstrate module capabilities.
+###################################################
+def main():
+
+    # Print byline from imported module
+    print(f"Byline: {seabaugh_utils.byline}")
+    
+    # Define the prefix for the folders
+    prefix = 'data-'
+
+    # Define the folder names for each data type
+    folder_names = ['txt', 'csv', 'excel', 'json']
+
+    # Create folders using the prefixed naming
+    result = seabaugh_project_setup.create_prefixed_folders(folder_names, prefix)
+    print(result)
+
+    # Define the base directory relative to the script's location
+    base_dir = pathlib.Path(__file__).parent.joinpath('data')
+
+    # Define URLs for data fetching
+    txt_url = 'https://shakespeare.mit.edu/hamlet/full.html'
+    csv_url = 'https://raw.githubusercontent.com/LearnDataSci/articles/master/Python%20Pandas%20Tutorial%20A%20Complete%20Introduction%20for%20Beginners/IMDB-Movie-Data.csv'
+    excel_url = 'https://github.com/bharathirajatut/sample-excel-dataset/raw/master/cattle.xls'
+    json_url =  'http://api.open-notify.org/astros.json'
+
+    # Define filenames for data storage
+    txt_filename = 'data.txt'
+    csv_filename = 'data.csv'
+    excel_filename = 'data.xls'
+    json_filename = 'data.json'
+
+    # Define full paths for each folder
+    txt_folder = pathlib.Path(base_dir).joinpath(f'{prefix}txt')
+    csv_folder = pathlib.Path(base_dir).joinpath(f'{prefix}csv')
+    excel_folder = pathlib.Path(base_dir).joinpath(f'{prefix}excel')
+    json_folder = pathlib.Path(base_dir).joinpath(f'{prefix}json')
+
+    # Fetch and write data to files
+    fetch_and_write_txt_data(txt_folder, txt_filename, txt_url)
+    fetch_and_write_csv_data(csv_folder, csv_filename, csv_url)
+    fetch_and_write_excel_data(excel_folder, excel_filename, excel_url)
+    fetch_and_write_json_data(json_folder, json_filename, json_url)
+
+    # Process the fetched data
+    process_text_data(txt_folder, txt_filename, 'results_txt.txt')
+    process_csv_data(csv_folder, csv_filename, 'results_csv.txt')
+    process_excel_data(excel_folder, excel_filename, 'results_xls.txt')
+    process_json_data(json_folder, json_filename, 'results_json.txt')
+
+    print("Data fetching and processing complete.")
+
+
+if __name__ == "__main__":
+    main()
